@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import polygon.Polygon;
+
 public class BlendEdges {
 	private static int[][] blendFilter = new int[][]{
 											  {1, 1, 1},

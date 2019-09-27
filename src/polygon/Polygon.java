@@ -1,7 +1,9 @@
 package polygon;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The 2D polygon. <br>
@@ -11,6 +13,11 @@ import java.util.List;
  */
 public class Polygon {
 
+	public Map<Integer, Integer> polygonLeftPixels; // <Y cood, X coord>
+	public Map<Integer, Integer> polygonRightPixels; // <Y cood, X coord>
+	public List<Point> pointsInsidePolygon;
+
+	
     private final BoundingBox _boundingBox;
     private final List<Line> _sides;
 
@@ -243,6 +250,60 @@ public class Polygon {
         public double xMin = Double.NEGATIVE_INFINITY;
         public double yMax = Double.NEGATIVE_INFINITY;
         public double yMin = Double.NEGATIVE_INFINITY;
+    }
+    
+    public void getAllPointsInsidePolygonList(Polygon polygon){
+    	//System.out.println("getPointsInsidePolygonList No of points sent in: " + points.size());
+    	pointsInsidePolygon = new ArrayList<>();
+		polygonLeftPixels = new HashMap<>();
+		polygonRightPixels = new HashMap<>();
+	
+		
+		// Loop through all the points in the bounding box and see which ones are in the Polygon.
+		int xMax = (int) _boundingBox.xMax;
+		int xMin = (int) _boundingBox.xMin;
+		int yMax = (int) _boundingBox.yMax;
+		int yMin = (int) _boundingBox.yMin;
+		for(int i = xMin; i <= xMax; i++){
+			for(int j = yMin; j <= yMax; j++){
+				Point pointToCheck = new Point(i, j);
+				Boolean isInside = polygon.contains(pointToCheck);
+				if(isInside){
+					//System.out.println("X : " + i + "--- Y : " + j);
+					pointsInsidePolygon.add(pointToCheck);
+					getPolygonLeftPixels(pointToCheck);
+					getPolygonRightPixels(pointToCheck);
+				}
+			} 
+		} 
+    }
+    
+    private void getPolygonLeftPixels(Point toCheck){      	  
+        int x = (int) toCheck.x;
+		  int minX = x;
+		  int y = (int) toCheck.y;
+		  
+		  if(polygonLeftPixels.containsKey(y)){
+			  if(minX < polygonLeftPixels.get(y)) {
+				polygonLeftPixels.put(y, minX);
+		  }
+		  }else{// if no value for y in the hashmap, put it in.
+			polygonLeftPixels.put(y, x);
+		  }
+  }
+  
+  private void getPolygonRightPixels(Point toCheck){        	  
+          int x = (int) toCheck.x;
+  		  int maxX = x;
+  		  int y = (int) toCheck.y;
+  		  
+  		  if(polygonRightPixels.containsKey(y)){
+  			  if(maxX > polygonRightPixels.get(y)) { //get(y)...y is the key of the Hashmap so it returns the value which is x.
+  				polygonRightPixels.put(y, maxX);
+  		  }
+  		  }else{// if no value for y in the hashmap, put it in.
+  			polygonRightPixels.put(y, x);
+  		  }
     }
 }
 

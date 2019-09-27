@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import polygon.Point;
 
 
 /*
@@ -18,8 +19,8 @@ public class RGB {
   public static List<RgbValue> getRgbValuesFrom(BufferedImage image, List<Point> pointsInPolygon) {
 	    rgbValues = new ArrayList<>();
 	    for(int i = 0; i < pointsInPolygon.size(); i++){    	
-	    	int x = pointsInPolygon.get(i).x;
-	    	int y = pointsInPolygon.get(i).y;
+	    	int x = (int) pointsInPolygon.get(i).x;
+	    	int y = (int) pointsInPolygon.get(i).y;
 	        int pixelRgb = image.getRGB(x, y);
 	        putPixelARGBInList(pixelRgb, x, y);	        
 	    }
@@ -42,8 +43,8 @@ public class RGB {
   public static Map<Integer, RgbValue> getRgbValuesMapFrom(BufferedImage image, List<Point> pointsInPolygon) {
 	  rgbValuesMap = new HashMap<>();
 	    for(int i = 0; i < pointsInPolygon.size(); i++){    	
-	    	int x = pointsInPolygon.get(i).x;
-	    	int y = pointsInPolygon.get(i).y;
+	    	int x = (int) pointsInPolygon.get(i).x;
+	    	int y = (int) pointsInPolygon.get(i).y;
 	        int pixelRgb = image.getRGB(x, y);
 	        putPixelRGBInHashMap(pixelRgb, x, y);	        
 	    }
